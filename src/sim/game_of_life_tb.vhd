@@ -16,18 +16,17 @@ use STD.textio.all;
 -------------------------------------------------------------------------------
 
 entity game_of_life_tb is
-
+  generic (G_BRAM_INIT_FILE_PATH : string := "");
 end entity game_of_life_tb;
 
 -------------------------------------------------------------------------------
 
 architecture behav of game_of_life_tb is
-  constant C_OUT_PATH : string := "sim_output.txt";
-  constant C_NUM_FRAMES : natural :=3;
+  constant C_OUT_PATH     : string  := "sim_output.txt";
+  constant C_NUM_FRAMES   : natural := 3;
   -- component generics
   constant C_FRAME_WIDTH  : natural := 640;
   constant C_FRAME_HEIGHT : natural := 480;
-  constant C_INIT_FILE    : string  := "";
   constant C_PXL_TICK_DIV : natural := 4;  -- once every 4 clks
 
   signal pxl_tick_cnt : unsigned(1 downto 0) := (others => '0');
@@ -40,9 +39,6 @@ architecture behav of game_of_life_tb is
   constant C_CLK_PERIOD : time      := 10 ns;
   signal clk            : std_logic := '1';
   signal rst            : std_logic := '0';
-
-  constant C_COUNT_MAX : natural := 127;
-  signal count         : natural range 0 to C_COUNT_MAX;
 
 begin  -- architecture behav
 
@@ -67,7 +63,7 @@ begin  -- architecture behav
     generic map (
       G_FRAME_WIDTH  => C_FRAME_WIDTH,
       G_FRAME_HEIGHT => C_FRAME_HEIGHT,
-      G_INIT_FILE    => C_INIT_FILE)
+      G_INIT_FILE    => G_BRAM_INIT_FILE_PATH)
     port map (
       clk          => clk,
       rst          => rst,
@@ -105,28 +101,6 @@ begin  -- architecture behav
     end loop;
     assert false report "end of simulation" severity failure;
   end process;
-
-
-
-
-
-  ----------------------------------------------------------------------
-  process (clk)
-  begin
-    if (rising_edge(clk)) then
-      if (rst = '0') then
-        count <= 0;
-      else
-        if (count < C_COUNT_MAX) then
-          count <= count + 1;
-        else
-          count <= 0;
-        end if;
-      end if;
-    end if;
-  end process;
-
-
 
 end architecture behav;
 
