@@ -21,7 +21,7 @@ entity game_of_life is
   generic (
     G_FRAME_WIDTH  : natural := 640;
     G_FRAME_HEIGHT : natural := 480;
-    G_INIT_FILE    : string  := ""
+    G_INIT_FILE    : string  := "../scripts/bram_init.txt"
     );
   port(
     clk : in std_logic;
@@ -90,7 +90,7 @@ begin
     generic map (
       G_DEPTH     => G_FRAME_WIDTH * (G_FRAME_HEIGHT - 1) - 3,
       G_WIDTH     => 1,
-      G_INIT_FILE => "../scripts/bram_init.txt")  --TODO add file path
+      G_INIT_FILE => G_INIT_FILE)
     port map (
       clk       => clk,
       i_wr_data => (0 => next_cell_state),        --convert to slv
