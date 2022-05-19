@@ -7,6 +7,7 @@ TOP ?= arty_top
 PATTERN ?= oscspn3
 
 OUTPUT_DIR ?= $(PROJECT)_$(PATTERN)_build
+PRJ_DIR ?= ../
 
 .PHONY: all clean synth route write_bitstream program
 
@@ -16,6 +17,7 @@ synth : $(OUTPUT_DIR)/$(TOP)_synth.dcp
 
 $(OUTPUT_DIR)/$(TOP)_synth.dcp : 
 	@mkdir -p $(OUTPUT_DIR)
+	python $(PRJ_DIR)/scripts/parse_test_pattern.py --mode file --height 480 --width 640 --in_fn $(PRJ_DIR)/scripts/test_patterns/$(PATTERN).lif --out_fn $(PRJ_DIR)/scripts/bram_init.txt
 	@echo "source $(PROJECT)_prj.tcl" > synth.tcl
 	@echo "read_xdc Arty-A7-35-Master.xdc" >> synth.tcl
 # Increase the default loop limit in vivado. This is needed because a big for loop is used to initialise the BRAM content
