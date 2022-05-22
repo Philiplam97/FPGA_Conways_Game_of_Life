@@ -1,7 +1,7 @@
 # FPGA_Conways_Game_of_Life
 Conway's Game of Life implemented on an Arty A7 with a VGA 640x480 60Hz output. Computations are done in real time at the pixel rate.
 
-The test patterns located in `scripts/test_patterns`  are downloaded from https://conwaylife.com/ref/lifepage/patterns/
+The test patterns located in `scripts/test_patterns`  are downloaded from [here](https://conwaylife.com/ref/lifepage/patterns/).
 
 ## Usage
 Requires:
@@ -23,7 +23,7 @@ To determine the value of a cell for the next generation, we need access to the 
 
 The output is taken as the centre value of the window, the 9 registers, and the next cell state is calculated and written back into the bottom shift register.
 
-Note that in theory, the game of life should be played on a infinite grid, but I have limited the grid to 640x480. Cells outside of this grid are assumed to be dead.
+Note that, in theory, the game of life should be played on a infinite grid but in this design I have limited the grid to 640x480. Cells outside of this grid are assumed to be dead.
 
 <p align="center">
   <img width="800"  src="https://github.com/Philiplam97/FPGA_Conways_Game_of_Life/blob/master/game_of_life_diagram.jpg?raw=true">
