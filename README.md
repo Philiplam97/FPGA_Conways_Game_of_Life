@@ -29,8 +29,14 @@ The output is taken as the centre value of the window, the 9 registers, and the 
 </p>
 
 
-### Resource usage
-Total resource usage is shown in the table below. This is the whole design, including the VGA driver. 
+### Resource Utilisation
+Total resource utilisation is shown in the table below. This is the whole design, including the VGA driver. 
 |LUTs|Registers|BRAMs| 
 |---|---|---|
 |127 |99|10|
+
+## Video Demonstration
+Click on the picture below to watch a Youtube video showing some of the starting test patterns tested with this design.
+
+[![Watch the video](https://img.youtube.com/vi/R8WKaXE9jXU/hqdefault.jpg)](https://youtu.be/R8WKaXE9jXU)
+
