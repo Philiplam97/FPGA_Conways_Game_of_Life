@@ -57,10 +57,9 @@ architecture rtl of game_of_life is
   signal sreg          : std_logic_vector(2 downto 0)                 := (others => '0');
 
   signal bram_sreg_out     : std_logic_vector(0 downto 0) := (others => '0');
-  signal bram_sreg_out_vld : std_logic                    := '0';
 
-  signal x_coor : unsigned(C_FRAME_WIDTH_CLOG2 - 1 downto 0)  := (others => '0');
-  signal y_coor : unsigned(C_FRAME_HEIGHT_CLOG2 - 1 downto 0) := (others => '0');
+  signal x_pos : unsigned(C_FRAME_WIDTH_CLOG2 - 1 downto 0)  := (others => '0');
+  signal y_pos : unsigned(C_FRAME_HEIGHT_CLOG2 - 1 downto 0) := (others => '0');
 
   signal next_cell_state : std_logic := '0';
 
@@ -95,19 +94,19 @@ begin
       clk       => clk,
       i_wr_data => (0 => next_cell_state),        --convert to slv
       i_wr_en   => i_en,
-      o_rd_data => bram_sreg_out,
-      o_vld     => bram_sreg_out_vld);
+      o_rd_data => bram_sreg_out
+      );
 
-  p_coord : process(clk)
+  p_calc_coordinates : process(clk)
   begin
     if rising_edge(clk) then
       if i_en = '1' then
-        x_coor <= x_coor + 1;
-        if x_coor = G_FRAME_WIDTH - 1 then
-          x_coor <= (others => '0');
-          y_coor <= y_coor + 1;
-          if y_coor = G_FRAME_HEIGHT - 1 then
-            y_coor <= (others => '0');
+        x_pos <= x_pos + 1;
+        if x_pos = G_FRAME_WIDTH - 1 then
+          x_pos <= (others => '0');
+          y_pos <= y_pos + 1;
+          if y_pos = G_FRAME_HEIGHT - 1 then
+            y_pos <= (others => '0');
           end if;
         end if;
       end if;
@@ -115,7 +114,7 @@ begin
   end process;
 
 
--- Logic to determin the state of the cell for the next generation
+  -- Logic to determine the state of the cell for the next generation
   p_compute_state : process(clk)
     variable v_neighbour_cells : std_logic_vector(7 downto 0) := (others => '0');
   begin
@@ -130,22 +129,22 @@ begin
       v_neighbour_cells(2 downto 0) := sreg;
 
       -- Handle the border cases by zeroing out values outslde of the frame
-      if y_coor = 0 then
+      if y_pos = 0 then
         --Top line, zero out top neighbours
         v_neighbour_cells(7 downto 5) := (others => '0');
       end if;
-      if y_coor = G_FRAME_HEIGHT - 1 then
+      if y_pos = G_FRAME_HEIGHT - 1 then
         --Bottom line, zero out bottom neighbours
         v_neighbour_cells(2 downto 0) := (others => '0');
       end if;
-      if x_coor = 0 then
+      if x_pos = 0 then
         --left edge , zero out left neighbours
         v_neighbour_cells(5) := '0';
         v_neighbour_cells(3) := '0';
         v_neighbour_cells(0) := '0';
 
       end if;
-      if x_coor = G_FRAME_WIDTH - 1 then
+      if x_pos = G_FRAME_WIDTH - 1 then
         -- Right edge, zero out right neighbours
         v_neighbour_cells(7) := '0';
         v_neighbour_cells(4) := '0';
